@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ✏️ EDIT: browser tab title -->
+<title>Sikiru Adewale</title>
+<meta name="description" content="HCI researcher at Virginia Tech — affective XR, AI-driven speech, wearable biosensing, and deep learning.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+<style>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✏️  COLOR SYSTEM — three named roles, each with a dark variant.
+       --accent  = violet   (XR / spatial computing)
+       --signal  = cyan     (biosignals / data)
+       --hot     = coral    (emotion / affective computing)
+       Change any hex below to retheme the whole site.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  /* surfaces */
+  --bg:        #F6F5FF;
+  --surface:   #FFFFFF;
+  --surface2:  #EDEBFF;
+  /* text */
+  --ink:       #09071A;
+  --muted:     #48436E;
+  --faint:     #8A87AB;
+  /* accent: electric violet */
+  --accent:    #5B21F5;
+  --accent-t:  rgba(91,33,245,0.08);
+  --accent-s:  rgba(91,33,245,0.16);
+  /* signal: vivid cyan */
+  --signal:    #00B5D8;
+  --signal-t:  rgba(0,181,216,0.08);
+  /* hot: coral red (emotion) */
+  --hot:       #F52060;
+  --hot-t:     rgba(245,32,96,0.08);
+  /* ui */
+  --border:    rgba(9,7,26,0.1);
+  --shadow:    0 4px 24px rgba(91,33,245,0.12),0 1px 4px rgba(9,7,26,0.06);
+  --shadow-sm: 0 2px 8px rgba(9,7,26,0.06);
+  /* fonts */
+  --font-d: 'Fraunces', Georgia, serif;
+  --font-b: 'DM Sans', system-ui, sans-serif;
+  --font-m: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:       #060418;
+    --surface:  #0C0924;
+    --surface2: #131030;
+    --ink:      #ECEAFE;
+    --muted:    #9490BF;
+    --faint:    #4E4970;
+    --accent:   #7C5BFF;
+    --accent-t: rgba(124,91,255,0.12);
+    --accent-s: rgba(124,91,255,0.22);
+    --signal:   #22DDF0;
+    --signal-t: rgba(34,221,240,0.1);
+    --hot:      #FF4D7A;
+    --hot-t:    rgba(255,77,122,0.1);
+    --border:   rgba(236,234,254,0.08);
+    --shadow:   0 4px 24px rgba(124,91,255,0.22),0 1px 4px rgba(0,0,0,0.3);
+    --shadow-sm:0 2px 8px rgba(0,0,0,0.25);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:       #060418;
+  --surface:  #0C0924;
+  --surface2: #131030;
+  --ink:      #ECEAFE;
+  --muted:    #9490BF;
+  --faint:    #4E4970;
+  --accent:   #7C5BFF;
+  --accent-t: rgba(124,91,255,0.12);
+  --accent-s: rgba(124,91,255,0.22);
+  --signal:   #22DDF0;
+  --signal-t: rgba(34,221,240,0.1);
+  --hot:      #FF4D7A;
+  --hot-t:    rgba(255,77,122,0.1);
+  --border:   rgba(236,234,254,0.08);
+  --shadow:   0 4px 24px rgba(124,91,255,0.22),0 1px 4px rgba(0,0,0,0.3);
+  --shadow-sm:0 2px 8px rgba(0,0,0,0.25);
+}
+
+/* ─── RESET ─── */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { font-family:var(--font-b); background:var(--bg); color:var(--ink); line-height:1.65; -webkit-font-smoothing:antialiased; }
+a { color:inherit; text-decoration:none; }
+
+/* ─── NAV ─────────────────────────────────────────────────────────
+   ✏️  To add a nav link: copy an <li> in the HTML and change the
+   href="#section-id" and link text.
+   ──────────────────────────────────────────────────────────────── */
+.nav { position:sticky; top:0; z-index:100; border-bottom:1px solid var(--border); background:var(--bg); }
+.nav-inner { max-width:1140px; margin:0 auto; padding:0 2rem; height:3.5rem; display:flex; align-items:center; justify-content:space-between; }
+.nav-name { font-family:var(--font-d); font-size:1rem; font-weight:500; letter-spacing:-0.01em; }
+.nav-links { display:flex; align-items:center; gap:1.75rem; list-style:none; }
+.nav-links a { font-size:0.875rem; color:var(--muted); transition:color .15s; letter-spacing:.01em; }
+.nav-links a:hover { color:var(--ink); }
+.theme-btn { width:2rem; height:2rem; border-radius:50%; border:1px solid var(--border); background:var(--surface); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--muted); transition:color .15s,background .15s; }
+.theme-btn:hover { color:var(--ink); background:var(--surface2); }
+
+/* ─── HERO ─────────────────────────────────────────────────────── */
+.hero { max-width:1140px; margin:0 auto; padding:6rem 2rem 5rem; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+.hero-eyebrow { font-family:var(--font-m); font-size:0.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--signal); margin-bottom:1.5rem; }
+.hero-name { font-family:var(--font-d); font-weight:500; font-size:clamp(3rem,5.5vw,5rem); line-height:1.04; letter-spacing:-0.04em; text-wrap:balance; margin-bottom:1.5rem; }
+.hero-role { font-size:1.0625rem; font-weight:300; color:var(--muted); margin-bottom:.875rem; line-height:1.6; }
+.hero-role strong { color:var(--ink); font-weight:500; }
+.hero-tagline { font-family:var(--font-d); font-style:italic; font-weight:300; font-size:1rem; color:var(--muted); max-width:44ch; line-height:1.8; margin-bottom:2.5rem; }
+.hero-cta { display:flex; gap:1rem; flex-wrap:wrap; }
+
+/* Buttons */
+.btn-p { display:inline-flex; align-items:center; gap:.5rem; padding:.65rem 1.35rem; background:var(--accent); color:#fff; border-radius:5px; font-size:.875rem; font-weight:500; letter-spacing:.01em; transition:opacity .15s,transform .1s; }
+.btn-p:hover { opacity:.88; transform:translateY(-1px); }
+.btn-s { display:inline-flex; align-items:center; gap:.5rem; padding:.65rem 1.35rem; border:1.5px solid var(--accent); color:var(--accent); border-radius:5px; font-size:.875rem; font-weight:500; transition:background .15s,color .15s; }
+.btn-s:hover { background:var(--accent); color:#fff; }
+
+/* ─── HERO VISUAL: affective circumplex monitor ────────────────
+   ✏️  The canvas draws Russell's Circumplex Model of Affect:
+       A 2D Valence × Arousal space with a wandering emotion dot.
+       Emotion zones: Excited, Happy, Content, Serene,
+                      Bored, Sad, Tense, Angry, Neutral.
+       Directly models the BEM used in the VoiceCaption AI system.
+       CH B (violet) = Speech synthesis waveform (EmoSay)
+   The animation code is in the <script> at the bottom.
+   To change monitor labels: edit .monitor-title / .mf-item text.
+   ──────────────────────────────────────────────────────────────── */
+.hero-visual { display:flex; flex-direction:column; gap:1.25rem; }
+.monitor {
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  overflow:hidden; box-shadow:var(--shadow);
+}
+.monitor-hdr {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.6rem 1rem; border-bottom:1px solid var(--border); background:var(--surface2);
+}
+.mhdr-left { display:flex; align-items:center; gap:.625rem; }
+.mhdr-dot { width:8px; height:8px; border-radius:50%; background:var(--hot); flex-shrink:0; }
+.mhdr-title { font-family:var(--font-m); font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--faint); }
+.mhdr-rate { font-family:var(--font-m); font-size:.65rem; color:var(--signal); letter-spacing:.06em; animation:blink 1.8s step-start infinite; }
+@keyframes blink { 50%{opacity:.35} }
+canvas#circumplex { display:block; width:100%; height:240px; }
+.monitor-ftr {
+  display:flex; gap:1.5rem; padding:.625rem 1rem; border-top:1px solid var(--border); flex-wrap:wrap;
+}
+.mftr-item { display:flex; align-items:center; gap:.4rem; font-family:var(--font-m); font-size:.65rem; color:var(--faint); letter-spacing:.04em; }
+.mftr-swatch { width:10px; height:2px; border-radius:1px; flex-shrink:0; }
+
+.sensor-tags { display:flex; flex-wrap:wrap; gap:.5rem; }
+.stag { font-family:var(--font-m); font-size:.7rem; padding:.3rem .65rem; border:1px solid var(--border); border-radius:3px; color:var(--faint); letter-spacing:.03em; }
+
+/* ─── SECTIONS ─── */
+.section { max-width:1140px; margin:0 auto; padding:5rem 2rem; }
+.section + .section { border-top:1px solid var(--border); }
+.sh { display:flex; align-items:baseline; gap:1.25rem; margin-bottom:3rem; }
+.sh h2 { font-family:var(--font-d); font-weight:500; font-size:clamp(1.75rem,3vw,2.5rem); letter-spacing:-0.025em; text-wrap:balance; line-height:1.15; white-space:nowrap; }
+.rule { flex:1; height:1px; background:var(--border); }
+
+/* ─── ABOUT ─── */
+.about-body { max-width:65ch; }
+.about-body p { font-size:1.05rem; line-height:1.8; color:var(--muted); margin-bottom:1.25rem; }
+.about-body p:last-of-type { margin-bottom:0; }
+.about-body strong { color:var(--ink); font-weight:500; }
+.affil { display:inline-flex; align-items:center; gap:.65rem; margin-top:2rem; padding:.65rem 1rem; background:var(--surface); border:1px solid var(--border); border-radius:5px; font-size:.875rem; color:var(--muted); }
+.affil-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+
+/* ─── RESEARCH CARDS ───────────────────────────────────────────
+   ✏️  Three stripe colors: default=violet (.rc), .rc.cy=cyan, .rc.ht=coral.
+   To change the stripe color of a card, add/remove class "cy" or "ht".
+   ──────────────────────────────────────────────────────────────── */
+.rg { display:grid; grid-template-columns:repeat(auto-fill,minmax(235px,1fr)); gap:1.5rem; }
+.rc { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1.75rem; position:relative; overflow:hidden; transition:box-shadow .2s,transform .2s; }
+.rc:hover { box-shadow:var(--shadow); transform:translateY(-2px); }
+.rc::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--accent); }
+.rc.cy::before { background:var(--signal); }
+.rc.ht::before { background:var(--hot); }
+.rc-icon { width:1.875rem; height:1.875rem; margin-bottom:1.25rem; color:var(--accent); }
+.rc.cy .rc-icon { color:var(--signal); }
+.rc.ht .rc-icon { color:var(--hot); }
+.rc h3 { font-family:var(--font-d); font-size:1.125rem; font-weight:500; letter-spacing:-0.01em; margin-bottom:.75rem; }
+.rc p { font-size:.875rem; line-height:1.7; color:var(--muted); }
+.rc-tags { margin-top:1.25rem; display:flex; flex-wrap:wrap; gap:.375rem; }
+.tag { font-family:var(--font-m); font-size:.65rem; letter-spacing:.03em; padding:.22rem .55rem; background:var(--accent-t); color:var(--accent); border-radius:3px; }
+.tag.cy { background:var(--signal-t); color:var(--signal); }
+.tag.ht { background:var(--hot-t); color:var(--hot); }
+
+/* ─── PUBLICATIONS ──────────────────────────────────────────────
+   ✏️  To add a paper: copy a full .pub block below, update the
+   title, authors, venue/year, and link href values.
+   Wrap YOUR name in <span class="me">...</span>.
+   ──────────────────────────────────────────────────────────────── */
+.pubs { display:flex; flex-direction:column; gap:1.5rem; }
+.pub {
+  background:var(--surface); border:1px solid var(--border); border-radius:8px;
+  padding:1.75rem; display:flex; gap:1.5rem;
+  transition:box-shadow .2s,transform .15s;
+}
+.pub:hover { box-shadow:var(--shadow); transform:translateY(-1px); }
+.pub-num { font-family:var(--font-m); font-size:.8rem; color:var(--accent); min-width:2rem; padding-top:.2rem; font-weight:400; letter-spacing:.02em; }
+.pub-body { flex:1; min-width:0; }
+.pub-title { font-family:var(--font-d); font-size:1.0625rem; font-weight:500; letter-spacing:-0.01em; line-height:1.4; color:var(--ink); margin-bottom:.625rem; text-wrap:balance; }
+.pub-authors { font-size:.875rem; color:var(--muted); margin-bottom:.5rem; line-height:1.5; }
+.pub-authors .me { color:var(--accent); font-weight:500; }
+.pub-venue { font-family:var(--font-m); font-size:.7rem; letter-spacing:.07em; color:var(--faint); margin-bottom:1rem; text-transform:uppercase; }
+.pub-links { display:flex; gap:.625rem; flex-wrap:wrap; }
+.pub-link {
+  display:inline-flex; align-items:center; gap:.4rem;
+  padding:.3rem .8rem; border:1px solid var(--border); border-radius:4px;
+  font-family:var(--font-m); font-size:.68rem; letter-spacing:.04em; color:var(--muted);
+  transition:background .15s,color .15s,border-color .15s;
+}
+.pub-link:hover { background:var(--accent); border-color:var(--accent); color:#fff; }
+.pub-link.acm:hover { background:#E61B2C; border-color:#E61B2C; }
+.pub-link.arx:hover { background:#B31B1B; border-color:#B31B1B; }
+.pub-link.doi:hover { background:#005A8B; border-color:#005A8B; }
+.pub-link.wil:hover { background:#003A5F; border-color:#003A5F; }
+.pub-badge {
+  display:inline-flex; align-items:center;
+  font-family:var(--font-m); font-size:.6rem; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--accent); border:1px solid var(--accent-s); background:var(--accent-t);
+  border-radius:3px; padding:.1rem .45rem; margin-left:.5rem; vertical-align:middle;
+}
+
+/* ─── PROJECTS ──────────────────────────────────────────────────
+   ✏️  Project cards: for GitHub repos, wrap .pc in <a href="...">.
+   For research work with no public link, use a plain <div class="pc">.
+   .pname = repo name (mono), .pdesc = description paragraph,
+   .pmeta = language badge + tags
+   ──────────────────────────────────────────────────────────────── */
+.pg { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.25rem; }
+.pc { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1.5rem; display:flex; flex-direction:column; gap:.75rem; transition:box-shadow .2s,transform .15s; }
+.pc:hover { box-shadow:var(--shadow); transform:translateY(-1px); }
+.pt { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+.pname { font-family:var(--font-m); font-size:.875rem; color:var(--accent); }
+.pico { color:var(--faint); flex-shrink:0; transition:color .15s; }
+.pc:hover .pico { color:var(--accent); }
+.pdesc { font-size:.9rem; line-height:1.7; color:var(--muted); flex:1; }
+.pmeta { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; }
+.ldot { display:flex; align-items:center; gap:.375rem; font-size:.75rem; color:var(--faint); }
+.ldot::before { content:''; width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.ldot.nb::before  { background:#DA5B0B; }
+.ldot.php::before { background:#4F5D95; }
+.ldot.c::before   { background:#555; }
+.ldot.py::before  { background:#3572A5; }
+.ldot.rs::before  { background:var(--signal); }
+
+/* ─── CONTACT ─── */
+.contact-body { max-width:52ch; }
+.contact-body p { font-size:1rem; line-height:1.75; color:var(--muted); margin-bottom:2rem; }
+.clinks { display:flex; flex-wrap:wrap; gap:1rem; }
+.clink { display:inline-flex; align-items:center; gap:.5rem; padding:.65rem 1.35rem; border:1.5px solid var(--border); border-radius:5px; background:var(--surface); font-size:.875rem; font-weight:500; color:var(--ink); transition:background .15s,border-color .15s,color .15s; }
+.clink:hover { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+/* ─── FOOTER ─── */
+footer { border-top:1px solid var(--border); padding:2rem; }
+.foot { max-width:1140px; margin:0 auto; font-family:var(--font-m); font-size:.75rem; color:var(--faint); letter-spacing:.04em; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width:768px) {
+  .hero { grid-template-columns:1fr; padding:3rem 1.5rem 2.5rem; gap:2.5rem; }
+  .section { padding:3rem 1.5rem; }
+  .nav-links .hide-sm { display:none; }
+  .pub { flex-direction:column; gap:1rem; }
+  .pub-num { padding-top:0; }
+}
+@media (max-width:480px) {
+  .nav-inner,.section,.hero { padding-left:1.25rem; padding-right:1.25rem; }
+}
+*:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
+</style>
+</head>
+<body>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ✏️  NAV — add links by copying an <li> and setting href="#id"
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <span class="nav-name">Sikiru Adewale</span><!-- ✏️ your name -->
+    <ul class="nav-links" role="list">
+      <li class="hide-sm"><a href="#about">About</a></li>
+      <li class="hide-sm"><a href="#research">Research</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li>
+        <button class="theme-btn" aria-label="Toggle theme" onclick="toggleTheme()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ✏️  HERO — edit eyebrow, name, role, tagline, and button links
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="hero">
+  <div class="hero-text">
+    <!-- ✏️ Small label above your name -->
+    <p class="hero-eyebrow">HCI Researcher · Virginia Tech</p>
+
+    <!-- ✏️ Your name — split across lines for visual impact -->
+    <h1 class="hero-name">Sikiru<br>Adewale</h1>
+
+    <!-- ✏️ One-line description of your role -->
+    <p class="hero-role">
+      <strong>PhD candidate</strong> in Human-Computer Interaction —<br>
+      affective XR, AI speech systems &amp; wearable biosensing.
+    </p>
+
+    <!-- ✏️ Short italic tagline — your research vision in one sentence -->
+    <p class="hero-tagline">
+      Building systems that feel and respond: where emotion meets the interface, and speech becomes space.
+    </p>
+
+    <!-- ✏️ Buttons — change href to any URL or #section-id -->
+    <div class="hero-cta">
+      <a href="#publications" class="btn-p">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Publications
+      </a>
+      <a href="https://github.com/sadewale1" target="_blank" rel="noopener" class="btn-s">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+
+  <!-- ✏️  HERO VISUAL — the animated circumplex monitor.
+       Shows Russell's Circumplex Model of Affect (Valence × Arousal)
+       as used in VoiceCaption AI and EmoSay. The wandering dot is the
+       current inferred emotion state. Zone labels update automatically.
+       Animation code is in the <script> at the bottom.
+  -->
+  <div class="hero-visual" aria-hidden="true">
+    <div class="monitor">
+      <div class="monitor-hdr">
+        <div class="mhdr-left">
+          <div class="mhdr-dot"></div>
+          <span class="mhdr-title">Affective Circumplex — Russell's Model</span><!-- ✏️ monitor title -->
+        </div>
+        <span class="mhdr-rate">● LIVE · BEM</span>
+      </div>
+      <canvas id="circumplex"></canvas>
+      <div class="monitor-ftr">
+        <div class="mftr-item">
+          <div class="mftr-swatch" style="background:var(--signal)"></div>
+          Valence axis<!-- ✏️ axis label -->
+        </div>
+        <div class="mftr-item">
+          <div class="mftr-swatch" style="background:var(--accent)"></div>
+          Arousal axis<!-- ✏️ axis label -->
+        </div>
+        <div class="mftr-item">
+          <div class="mftr-swatch" style="background:var(--hot)"></div>
+          State: <span id="emo-label" style="margin-left:.3rem;color:var(--hot)">Neutral</span><!-- ✏️ live emotion readout -->
+        </div>
+      </div>
+    </div>
+    <div class="sensor-tags"><!-- ✏️ add/remove device tags -->
+      <span class="stag">EmoSay · TTS</span>
+      <span class="stag">Empatica E4</span>
+      <span class="stag">EmotiBit</span>
+      <span class="stag">EDA · PPG</span>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ✏️  ABOUT — edit the three <p> paragraphs and the .affil line
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section" id="about">
+  <div class="sh"><h2>About</h2><div class="rule" aria-hidden="true"></div></div>
+  <div class="about-body">
+    <p>
+      I'm a PhD candidate at <strong>Virginia Tech</strong> in <strong>Human-Computer Interaction</strong>, where my research explores how intelligent systems can perceive, model, and respond to human emotion — especially in immersive and embodied contexts.
+    </p>
+    <p>
+      My published work includes <strong>EmoSay</strong>, an AI-driven text-to-emotional-speech system for affective communication in Extended Reality (HCI International 2026), and deep learning approaches to video understanding using encoder-decoder LSTM architectures. I also conduct hands-on <strong>wearable biosensing</strong> research using Empatica E4 and EmotiBit sensors in pre-operative clinical settings.
+    </p>
+    <p>
+      Across all my work, I'm interested in the human side of intelligent systems: how people feel during interaction, and how systems can be built to honour that.
+    </p>
+    <!-- ✏️ Change your institution, department, or lab name here -->
+    <div class="affil">
+      <div class="affil-dot"></div>
+      Virginia Tech · Electrical &amp; Computer Engineering · HCI Research
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ✏️  RESEARCH AREAS — edit each .rc card:
+         <h3> = area title  |  <p> = description
+         Card stripe color: default=violet, add class "cy"=cyan, "ht"=coral
+         Tags: default=violet, .cy=cyan, .ht=coral
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section" id="research">
+  <div class="sh"><h2>Research Areas</h2><div class="rule" aria-hidden="true"></div></div>
+  <div class="rg">
+
+    <!-- Card 1: Affective Computing (coral) -->
+    <div class="rc ht">
+      <svg class="rc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <h3>Affective Computing &amp; XR</h3>
+      <p>Designing AI systems for emotional communication in Extended Reality. Text-to-emotional-speech, affective signal processing, and expressive interaction for immersive environments.</p>
+      <div class="rc-tags">
+        <span class="tag ht">EmoSay</span>
+        <span class="tag ht">Affective TTS</span>
+        <span class="tag">Unity</span>
+        <span class="tag">Meta Quest Pro</span>
+        <span class="tag">Spatial Audio</span>
+      </div>
+    </div>
+
+    <!-- Card 2: Wearable Biosensing (cyan) -->
+    <div class="rc cy">
+      <svg class="rc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <h3>Wearable Biosensing</h3>
+      <p>Multi-modal physiological data acquisition in clinical and everyday contexts. EDA, PPG, and accelerometry pipelines from body-worn sensors for emotion and stress recognition.</p>
+      <div class="rc-tags">
+        <span class="tag cy">Empatica E4</span>
+        <span class="tag cy">EmotiBit</span>
+        <span class="tag">EDA</span>
+        <span class="tag">PPG</span>
+        <span class="tag">Pre-operative</span>
+      </div>
+    </div>
+
+    <!-- Card 3: ML & Deep Learning (violet) -->
+    <div class="rc">
+      <svg class="rc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+      <h3>ML &amp; Deep Learning</h3>
+      <p>Encoder-decoder architectures for sequence modeling, including LSTM-based video captioning. ML pipelines for physiological time-series classification and cross-subject generalization.</p>
+      <div class="rc-tags">
+        <span class="tag">LSTM</span>
+        <span class="tag">Seq2Seq</span>
+        <span class="tag">Python</span>
+        <span class="tag">PyTorch</span>
+        <span class="tag">Time-Series</span>
+      </div>
+    </div>
+
+    <!-- Card 4: IoT / SCADA (violet) -->
+    <div class="rc">
+      <svg class="rc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="8" height="8" rx="1"/><rect x="14" y="2" width="8" height="8" rx="1"/><rect x="14" y="14" width="8" height="8" rx="1"/><rect x="2" y="14" width="8" height="8" rx="1"/></svg>
+      <h3>IoT &amp; SCADA Systems</h3>
+      <p>Distributed monitoring across smart grid and manufacturing domains. ESP32 and Raspberry Pi networks under OPC-UA, MQTT, DNP3, with historian database integration.</p>
+      <div class="rc-tags">
+        <span class="tag">ESP32</span>
+        <span class="tag">OPC-UA</span>
+        <span class="tag">MQTT</span>
+        <span class="tag">DNP3</span>
+        <span class="tag">SEL-3505</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ✏️  PUBLICATIONS — ordered newest first.
+         Your name has class="me" (shows in violet).
+         First-author papers have <span class="pub-badge">First Author</span> after the title.
+         pub-link classes: acm (red), arx (dark red), doi (blue), wil (Wiley navy).
+         To add a paper: copy a .pub block, update title/authors/venue/links, renumber pub-num.
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section" id="publications">
+  <div class="sh"><h2>Publications</h2><div class="rule" aria-hidden="true"></div></div>
+  <div class="pubs">
+
+    <!-- ✏️ Paper 01 · 2026 — first author -->
+    <div class="pub">
+      <span class="pub-num">01</span>
+      <div class="pub-body">
+        <div class="pub-title">
+          EmoSay: Artificial Intelligence-Driven Text-to-Emotional-Speech System for Affective Communication in Extended Reality
+          <span class="pub-badge">First Author</span>
+        </div>
+        <div class="pub-authors">
+          <span class="me">Sikiru Adewale</span>, Sunday Ubur, Onyeka Emebo, Denis Gracanin
+        </div>
+        <div class="pub-venue">HCI International · 2026</div>
+        <div class="pub-links">
+          <a href="https://dl.acm.org/doi/10.1007/978-3-032-31421-5_1" target="_blank" rel="noopener" class="pub-link acm">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            ACM Digital Library
+          </a>
+          <a href="https://arxiv.org/abs/2608.26566" target="_blank" rel="noopener" class="pub-link arx">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            arXiv 2608.26566
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✏️ Paper 02 · 2025 — co-author -->
+    <div class="pub">
+      <span class="pub-num">02</span>
+      <div class="pub-body">
+        <div class="pub-title">Interpretive Caption: Real-Time Vocal Emotion Cues for DHH Users</div>
+        <div class="pub-authors">
+          Sunday David Ubur, <span class="me">Sikiru Adewale</span>, Nikitha Donekel Chandrashekar, Enoch Katey Akli, Denis Gracanin
+        </div>
+        <div class="pub-venue">ASSETS · ACM SIGACCESS · October 2025 · pp. 1–5</div>
+        <div class="pub-links">
+          <a href="https://dl.acm.org/doi/proceedings/10.1145/3663548" target="_blank" rel="noopener" class="pub-link acm">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            ACM SIGACCESS 2025
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✏️ Paper 03 · 2024 — first author -->
+    <div class="pub">
+      <span class="pub-num">03</span>
+      <div class="pub-body">
+        <div class="pub-title">
+          Encoder-Decoder Based Long Short-Term Memory (LSTM) Model for Video Captioning
+          <span class="pub-badge">First Author</span>
+        </div>
+        <div class="pub-authors">
+          <span class="me">Sikiru Adewale</span>, Tosin Ige, Bolanle Hafiz Matti
+        </div>
+        <div class="pub-venue">arXiv Preprint · 2024</div>
+        <div class="pub-links">
+          <a href="https://arxiv.org/abs/2401.02052" target="_blank" rel="noopener" class="pub-link arx">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            arXiv 2401.02052
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✏️ Paper 04 · 2023 — co-author -->
+    <div class="pub">
+      <span class="pub-num">04</span>
+      <div class="pub-body">
+        <div class="pub-title">Adversarial Sampling for Fairness Testing in Deep Neural Network</div>
+        <div class="pub-authors">
+          Tosin Ige, William Marfo, Justin Tonkinson, <span class="me">Sikiru Adewale</span>, Bolanle Hafiz Matti
+        </div>
+        <div class="pub-venue">IJACSA · Vol. 14, No. 2 · February 2023</div>
+        <div class="pub-links">
+          <a href="https://thesai.org/Publications/ViewPaper?Volume=14&Issue=2" target="_blank" rel="noopener" class="pub-link doi">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            IJACSA Vol.14 No.2
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✏️ Paper 05 · 2022 — first author -->
+    <div class="pub">
+      <span class="pub-num">05</span>
+      <div class="pub-body">
+        <div class="pub-title">
+          Machine Learning Algorithms for Credit Card Fraud Detection
+          <span class="pub-badge">First Author</span>
+        </div>
+        <div class="pub-authors">
+          <span class="me">Sikiru Ademola Adewale</span>, Amarachi Blessing Mbakwe
+        </div>
+        <div class="pub-venue">Machine Learning and Artificial Intelligence Journal (MLAIJ) · Vol. 9, No. 4 · December 2022</div>
+        <div class="pub-links">
+          <a href="https://airccse.com/journal/mlaij/index.html" target="_blank" rel="noopener" class="pub-link doi">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            MLAIJ Vol.9 No.4
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✏️ Paper 06 · 2022 — co-author -->
+    <div class="pub">
+      <span class="pub-num">06</span>
+      <div class="pub-body">
+        <div class="pub-title">AI-Powered Anti-Cyber Bullying System using Machine Learning Algorithm of Multinomial Naïve Bayes and Optimized Linear Support Vector Machine</div>
+        <div class="pub-authors">
+          Tosin Ige, <span class="me">Sikiru Adewale</span>
+        </div>
+        <div class="pub-venue">IJACSA · Vol. 13, No. 5 · July 2022</div>
+        <div class="pub-links">
+          <a href="https://thesai.org/Publications/ViewPaper?Volume=13&Issue=5" target="_blank" rel="noopener" class="pub-link doi">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            IJACSA Vol.13 No.5
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✏️ Paper 07 · 2022 — co-author -->
+    <div class="pub">
+      <span class="pub-num">07</span>
+      <div class="pub-body">
+        <div class="pub-title">Implementation of Data Mining on a Secure Cloud Computing over a Web API using Supervised Machine Learning Algorithm</div>
+        <div class="pub-authors">
+          Tosin Ige, <span class="me">Sikiru Adewale</span>
+        </div>
+        <div class="pub-venue">IJACSA · Vol. 13, No. 5 · July 2022</div>
+        <div class="pub-links">
+          <a href="https://thesai.org/Publications/ViewPaper?Volume=13&Issue=5" target="_blank" rel="noopener" class="pub-link doi">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            IJACSA Vol.13 No.5
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✏️ ACCEPTED JOURNAL (Wiley) — fill in details when published:
+         Replace the title, authors, venue/DOI, and the href below.
+    <div class="pub">
+      <span class="pub-num">08</span>
+      <div class="pub-body">
+        <div class="pub-title">
+          [Accepted Wiley Journal — add title here]
+          <span class="pub-badge">First Author</span>
+        </div>
+        <div class="pub-authors">
+          <span class="me">Sikiru Adewale</span>, Co-Author Names
+        </div>
+        <div class="pub-venue">Journal Name · Wiley · Year</div>
+        <div class="pub-links">
+          <a href="YOUR_PUBLISHED_DOI_HERE" target="_blank" rel="noopener" class="pub-link wil">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Wiley Online Library
+          </a>
+        </div>
+      </div>
+    </div>
+    -->
+
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ✏️  PROJECTS — wrap in <a href="..."> for GitHub links,
+         or use plain <div class="pc"> for research-only work.
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section" id="projects">
+  <div class="sh"><h2>Projects</h2><div class="rule" aria-hidden="true"></div></div>
+  <div class="pg">
+
+    <div class="pc">
+      <div class="pt"><span class="pname">EmoSay · Affective XR Speech</span><span class="tag ht">Published</span></div>
+      <p class="pdesc">AI-driven text-to-emotional-speech system for XR environments. Integrates prosody control, emotion modeling, and spatial audio for immersive affective communication.</p>
+      <div class="pmeta"><span class="ldot rs">Research</span><span class="tag">Python</span><span class="tag">XR</span><span class="tag ht">HCI Intl. 2026</span></div>
+    </div>
+
+    <div class="pc">
+      <div class="pt"><span class="pname">Video Captioning · LSTM</span><span class="tag">Preprint</span></div>
+      <p class="pdesc">Encoder-decoder LSTM architecture for automatic video captioning. Temporal sequence modeling for natural language generation from video content.</p>
+      <div class="pmeta"><span class="ldot py">Python</span><span class="tag">LSTM</span><span class="tag">NLP</span><span class="tag">arXiv 2024</span></div>
+    </div>
+
+    <div class="pc">
+      <div class="pt"><span class="pname">Wearable ML Pipeline</span><span class="tag cy">PhD Work</span></div>
+      <p class="pdesc">End-to-end signal acquisition and classification pipeline. Empatica E4 and EmotiBit in pre-operative clinical settings, with physiological feature extraction for emotion and stress inference.</p>
+      <div class="pmeta"><span class="ldot rs">Research</span><span class="tag">Python</span><span class="tag">Clinical</span></div>
+    </div>
+
+    <a href="https://github.com/sadewale1/data_incubator" target="_blank" rel="noopener" class="pc">
+      <div class="pt"><span class="pname">data_incubator</span>
+        <svg class="pico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </div>
+      <p class="pdesc">Analysis of NYC Fire Department incident data — spatial patterns, response time distributions, and incident type trends across all five boroughs.</p>
+      <div class="pmeta"><span class="ldot nb">Jupyter Notebook</span><span class="tag">Data Analysis</span></div>
+    </a>
+
+    <a href="https://github.com/sadewale1/fars" target="_blank" rel="noopener" class="pc">
+      <div class="pt"><span class="pname">fars</span>
+        <svg class="pico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </div>
+      <p class="pdesc">Comprehensive analysis of NHTSA's Fatality Analysis Reporting System — statistical modeling and visualization of motor vehicle crash patterns and risk factors.</p>
+      <div class="pmeta"><span class="ldot nb">Jupyter Notebook</span><span class="tag">Statistics</span><span class="tag">Public Safety</span></div>
+    </a>
+
+    <a href="https://github.com/sadewale1/tsn-doc" target="_blank" rel="noopener" class="pc">
+      <div class="pt"><span class="pname">tsn-doc</span>
+        <svg class="pico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </div>
+      <p class="pdesc">Documentation for Time-Sensitive Networking (TSN) Linux components and IEEE 802.1 standard implementation for deterministic real-time communication.</p>
+      <div class="pmeta"><span class="ldot c">C</span><span class="tag">Networking</span><span class="tag">IEEE 802.1</span></div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ✏️  CONTACT — change email href and social profile URLs below
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section" id="contact">
+  <div class="sh"><h2>Get in Touch</h2><div class="rule" aria-hidden="true"></div></div>
+  <div class="contact-body">
+    <p>Open to research collaborations, academic discussions, and conversations about affective computing, HCI, XR, or wearable sensing.</p>
+    <div class="clinks">
+      <!-- ✏️ Change the email address in both the href and the mailto: -->
+      <a href="mailto:adewale.s.ademola@gmail.com" class="clink">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email
+      </a>
+      <!-- ✏️ Change GitHub URL -->
+      <a href="https://github.com/sadewale1" target="_blank" rel="noopener" class="clink">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <!-- ✏️ Change LinkedIn URL -->
+      <a href="https://www.linkedin.com/in/sikiru-adewale/" target="_blank" rel="noopener" class="clink">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <!-- ✏️ Change footer text if you like -->
+  <div class="foot">
+    <span>sadewale1.github.io</span>
+    <span>Sikiru Adewale · 2026</span>
+  </div>
+</footer>
+
+<script>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Theme toggle
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function toggleTheme() {
+  var r = document.documentElement;
+  var c = r.dataset.theme;
+  if (c === 'dark') r.dataset.theme = 'light';
+  else if (c === 'light') r.dataset.theme = '';
+  else r.dataset.theme = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'light' : 'dark';
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Russell's Circumplex Model of Affect (BEM)
+   ✏️  Emotion zones are defined in the `zones` array below.
+       Each has: name, v (valence -1→+1), a (arousal -1→+1).
+       Dot wander speed: adjust t += 0.55 at the bottom of draw().
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+(function () {
+  var canvas = document.getElementById('circumplex');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var raf, t = 0;
+  var dpr = window.devicePixelRatio || 1;
+  var trail = [];
+  var emoLabel = document.getElementById('emo-label');
+
+  /* ✏️ Emotion zones — valence (v) and arousal (a) each in [-1, 1] */
+  var zones = [
+    { name:'Excited', emoji:'⚡', v: 0.60, a: 0.80, role:'hot'    },
+    { name:'Happy',   emoji:'😊', v: 0.85, a: 0.30, role:'signal'  },
+    { name:'Content', emoji:'🌿', v: 0.72, a:-0.38, role:'signal'  },
+    { name:'Serene',  emoji:'🌊', v: 0.38, a:-0.80, role:'signal'  },
+    { name:'Bored',   emoji:'😑', v:-0.38, a:-0.78, role:'faint'   },
+    { name:'Sad',     emoji:'💧', v:-0.72, a:-0.38, role:'faint'   },
+    { name:'Tense',   emoji:'😬', v:-0.58, a: 0.52, role:'accent'  },
+    { name:'Angry',   emoji:'🔥', v:-0.38, a: 0.82, role:'hot'    },
+    { name:'Neutral', emoji:'·',  v: 0.00, a: 0.00, role:'faint'   },
+  ];
+
+  function cssVar(v) {
+    return getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  }
+
+  function zoneColor(role) {
+    if (role === 'hot')    return cssVar('--hot');
+    if (role === 'signal') return cssVar('--signal');
+    if (role === 'accent') return cssVar('--accent');
+    return cssVar('--faint');
+  }
+
+  /* Smooth wandering path through valence-arousal space */
+  function getState(t) {
+    var vx = 0.55*Math.sin(t/160) + 0.26*Math.sin(t/72+1.3) + 0.14*Math.sin(t/31+2.7);
+    var vy = 0.52*Math.sin(t/210+0.6) + 0.28*Math.sin(t/85+2.1) + 0.12*Math.sin(t/38+0.4);
+    var r = Math.sqrt(vx*vx + vy*vy);
+    if (r > 0.90) { vx = vx/r*0.90; vy = vy/r*0.90; }
+    return { x: vx, y: vy };
+  }
+
+  function nearestZone(s) {
+    var best = zones[0], bestD = Infinity;
+    for (var i = 0; i < zones.length; i++) {
+      var z = zones[i];
+      var d = Math.sqrt((s.x-z.v)*(s.x-z.v) + (s.y-z.a)*(s.y-z.a));
+      if (d < bestD) { bestD = d; best = z; }
+    }
+    return best;
+  }
+
+  function resize() {
+    var w = canvas.parentElement ? canvas.parentElement.clientWidth : 400;
+    var h = 240;
+    canvas.style.height = h + 'px';
+    canvas.width  = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function draw() {
+    var W = canvas.width  / dpr;
+    var H = canvas.height / dpr;
+
+    var state = getState(t);
+    trail.push({ x: state.x, y: state.y });
+    if (trail.length > 70) trail.shift();
+
+    var zone = nearestZone(state);
+    if (emoLabel) emoLabel.textContent = zone.emoji + ' ' + zone.name;
+
+    var cSignal = cssVar('--signal');
+    var cAccent = cssVar('--accent');
+    var cHot    = cssVar('--hot');
+    var cFaint  = cssVar('--faint');
+    var cInk    = cssVar('--ink');
+
+    /* circumplex center and radius */
+    var cx = W / 2;
+    var cy = H / 2;
+    var R  = Math.min(W * 0.40, H * 0.40);
+
+    ctx.clearRect(0, 0, W, H);
+
+    /* ── Background radial fill ── */
+    ctx.globalAlpha = 0.07;
+    var bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
+    bg.addColorStop(0, cAccent);
+    bg.addColorStop(0.6, cSignal);
+    bg.addColorStop(1, 'transparent');
+    ctx.fillStyle = bg;
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI*2); ctx.fill();
+
+    /* ── Outer circle ── */
+    ctx.globalAlpha = 0.22;
+    ctx.strokeStyle = cFaint; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI*2); ctx.stroke();
+
+    /* ── Inner ring (0.5 R) ── */
+    ctx.globalAlpha = 0.09;
+    ctx.beginPath(); ctx.arc(cx, cy, R * 0.5, 0, Math.PI*2); ctx.stroke();
+
+    /* ── Axes (dashed) ── */
+    ctx.globalAlpha = 0.15;
+    ctx.setLineDash([3, 5]);
+    ctx.strokeStyle = cFaint; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(cx - R*1.12, cy); ctx.lineTo(cx + R*1.12, cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx, cy - R*1.12); ctx.lineTo(cx, cy + R*1.12); ctx.stroke();
+    ctx.setLineDash([]);
+
+    /* ── Axis labels ── */
+    ctx.font = '8px "JetBrains Mono", monospace';
+    ctx.globalAlpha = 0.40;
+    ctx.fillStyle = cFaint;
+    ctx.textAlign = 'center';
+    ctx.fillText('HIGH AROUSAL', cx, cy - R*1.14 - 3);
+    ctx.fillText('LOW AROUSAL',  cx, cy + R*1.14 + 11);
+    ctx.textAlign = 'right';
+    ctx.fillText('NEG. VALENCE', cx - R*1.08, cy - 4);
+    ctx.textAlign = 'left';
+    ctx.fillText('POS. VALENCE', cx + R*1.08, cy - 4);
+
+    /* ── Emotion zone markers ── */
+    for (var i = 0; i < zones.length; i++) {
+      var z   = zones[i];
+      var zx  = cx + z.v * R;
+      var zy  = cy - z.a * R;
+      var col = zoneColor(z.role);
+      var active = (z === zone);
+
+      /* active zone halo */
+      if (active && z.name !== 'Neutral') {
+        ctx.globalAlpha = 0.18;
+        ctx.fillStyle = col;
+        ctx.beginPath(); ctx.arc(zx, zy, 22, 0, Math.PI*2); ctx.fill();
+      }
+
+      /* zone dot */
+      ctx.globalAlpha = active ? 0.85 : 0.28;
+      ctx.fillStyle = col;
+      ctx.beginPath(); ctx.arc(zx, zy, active ? 3.5 : 2, 0, Math.PI*2); ctx.fill();
+
+      /* zone label — placed slightly outside R */
+      var lx = cx + z.v * R * (z.name === 'Neutral' ? 1.0 : 1.35);
+      var ly = cy - z.a * R * (z.name === 'Neutral' ? 1.0 : 1.35);
+      if (z.name === 'Neutral') { lx += 4; }
+      ctx.globalAlpha = active ? 1.0 : 0.28;
+      ctx.fillStyle   = active ? col : cFaint;
+      ctx.font = (active ? '600 8.5px' : '8px') + ' "JetBrains Mono", monospace';
+      ctx.textAlign   = z.v > 0.1 ? 'left' : z.v < -0.1 ? 'right' : 'center';
+      ctx.fillText(z.emoji + ' ' + z.name, lx, ly + 3);
+    }
+
+    /* ── Trail ── */
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    for (var j = 1; j < trail.length; j++) {
+      var a = j / trail.length;
+      ctx.globalAlpha = a * 0.30;
+      ctx.strokeStyle = cAccent;
+      ctx.lineWidth   = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(cx + trail[j-1].x * R, cy - trail[j-1].y * R);
+      ctx.lineTo(cx + trail[j].x   * R, cy - trail[j].y   * R);
+      ctx.stroke();
+    }
+
+    /* ── Current state dot (glowing) ── */
+    var dx  = cx + state.x * R;
+    var dy  = cy - state.y * R;
+    var dc  = zoneColor(zone.role);
+
+    ctx.globalAlpha = 0.18;
+    ctx.fillStyle = dc;
+    ctx.beginPath(); ctx.arc(dx, dy, 14, 0, Math.PI*2); ctx.fill();
+
+    ctx.globalAlpha = 0.45;
+    ctx.fillStyle = dc;
+    ctx.beginPath(); ctx.arc(dx, dy, 7, 0, Math.PI*2); ctx.fill();
+
+    ctx.globalAlpha = 1.0;
+    ctx.fillStyle = dc;
+    ctx.beginPath(); ctx.arc(dx, dy, 4, 0, Math.PI*2); ctx.fill();
+
+    ctx.globalAlpha = 0.9;
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(dx, dy, 1.6, 0, Math.PI*2); ctx.fill();
+
+    ctx.globalAlpha = 1;
+    t += 0.55;   /* ✏️ wander speed — higher = faster */
+    raf = requestAnimationFrame(draw);
+  }
+
+  var reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function init() {
+    resize();
+    if (reduced) { t = 300; draw(); cancelAnimationFrame(raf); }
+    else { draw(); }
+  }
+
+  window.addEventListener('resize', function () {
+    cancelAnimationFrame(raf);
+    resize();
+    if (!reduced) draw();
+  });
+
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(init);
+  else window.addEventListener('load', init);
+})();
+</script>
+</body>
+</html>
